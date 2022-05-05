@@ -29,13 +29,14 @@ jobs:
 
   cd-surge:
     runs-on: ubuntu-latest
+    working-directory: front
     needs: [test]
     steps:
       - name: Deploy to test-front-erick01.surge.sh
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: "test-front-erick01.surge.sh"
-          project: "./front"
+          project: "."
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
       #- uses: actions/checkout@v2
