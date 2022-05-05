@@ -15,32 +15,27 @@ jobs:
       - name: Ejecutar test
         run: npm test
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   needs: [test]
-  #   steps:
-  #     - name: CLonar y ubicarse en la rama main
-  #       uses: actions/checkout@v2
-  #     - name: Instalar dependencias
-  #       run: npm install
-  #     - name: Ejecutar test
-  #       run: npm build
-  #
-
-  cd-surge:
+  build:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
+      - name: Clonar y ubicarse en la rama main
+        uses: actions/checkout@v2
+      - name: Instalar dependencias
+        run: npm install
+      - name: Ejecutar test
+        run: npm run build
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Clonar y ubicarse en la rama main
+        uses: actions/checkout@v2
       - name: Deploy to test-front-erick01.surge.sh
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: "test-front-erick01.surge.sh"
-          project: "./front"
+          project: "front"
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
-      #- uses: actions/checkout@v2
-      #- uses: actions/setup-node@v1
-      #  with:
-      #    node-version: 12
-      #- run: npm ci
-      #- run: npm test
